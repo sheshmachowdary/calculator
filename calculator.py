@@ -1,48 +1,44 @@
-import math
+import tkinter as tk
 
-def calculator():
-    print("Simple Advanced Calculator")
-    print("Operations: +, -, *, /, sqrt, pow, sin, cos, tan, log")
+def click(event):
+    text = event.widget.cget("text")
+    if text == "=":
+        try:
+            result = eval(str(entry.get()))
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, result)
+        except Exception as e:
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, "Error")
+    elif text == "C":
+        entry.delete(0, tk.END)
+    else:
+        entry.insert(tk.END, text)
 
-    while True:
-        op = input("\nEnter operation (or 'exit' to quit): ")
+# Create main window
+root = tk.Tk()
+root.title("Python Calculator")
+root.geometry("300x400")
 
-        if op == 'exit':
-            break
-        elif op in ['+', '-', '*', '/']:
-            a = float(input("Enter first number: "))
-            b = float(input("Enter second number: "))
-            if op == '+':
-                print("Result:", a + b)
-            elif op == '-':
-                print("Result:", a - b)
-            elif op == '*':
-                print("Result:", a * b)
-            elif op == '/':
-                if b == 0:
-                    print("Error: Division by zero")
-                else:
-                    print("Result:", a / b)
-        elif op == 'sqrt':
-            x = float(input("Enter number: "))
-            print("Result:", math.sqrt(x))
-        elif op == 'pow':
-            base = float(input("Enter base: "))
-            exp = float(input("Enter exponent: "))
-            print("Result:", math.pow(base, exp))
-        elif op in ['sin', 'cos', 'tan']:
-            angle = float(input("Enter angle in degrees: "))
-            radians = math.radians(angle)
-            if op == 'sin':
-                print("Result:", math.sin(radians))
-            elif op == 'cos':
-                print("Result:", math.cos(radians))
-            elif op == 'tan':
-                print("Result:", math.tan(radians))
-        elif op == 'log':
-            x = float(input("Enter number: "))
-            print("Result:", math.log(x))
-        else:
-            print("Invalid operation")
+# Entry widget
+entry = tk.Entry(root, font="Arial 20")
+entry.pack(fill=tk.BOTH, ipadx=8, pady=10)
 
-calculator()
+# Button layout
+buttons = [
+    ["7", "8", "9", "/"],
+    ["4", "5", "6", "*"],
+    ["1", "2", "3", "-"],
+    ["0", ".", "=", "+"],
+    ["C"]
+]
+
+for row in buttons:
+    frame = tk.Frame(root)
+    frame.pack()
+    for btn_text in row:
+        btn = tk.Button(frame, text=btn_text, font="Arial 18", width=5, height=2)
+        btn.pack(side=tk.LEFT, padx=5, pady=5)
+        btn.bind("<Button-1>", click)
+
+root.mainloop()
